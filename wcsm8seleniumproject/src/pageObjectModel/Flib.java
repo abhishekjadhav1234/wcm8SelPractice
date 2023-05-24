@@ -16,56 +16,51 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 public class Flib {
 	
 	//read the Excel Data
-	
-	public String readExcelData(String ExcelPath, String SheetName, int RowCount, int CellCount) throws EncryptedDocumentException, IOException
+	public String readExcelData(String excelPath,String sheetName,int rowCount,int cellCount) throws EncryptedDocumentException, IOException
 	{
-		FileInputStream fis = new FileInputStream(ExcelPath);	//Provide the excel path
-		Workbook wb = WorkbookFactory.create(fis);	//make a file readt for read
-		Sheet sheet = wb.getSheet(SheetName);	//get the sheet file
-		Row row = sheet.getRow(RowCount); 	//get the desider row
-		Cell cell = row.getCell(CellCount); 	//get the desider Cell/col
-		String data=cell.getStringCellValue();	
-		return data;
-	}
+	FileInputStream fis = new FileInputStream(excelPath);
+	Workbook wb = WorkbookFactory.create(fis);
+	Sheet sheet = wb.getSheet(sheetName);
+	Row row = sheet.getRow(rowCount);
+	Cell cell = row.getCell(cellCount);
+	String data = cell.getStringCellValue();
+	return data;
+}
+
+public int rowCount(String excelPath,String sheetName) throws EncryptedDocumentException, IOException
+{
+	FileInputStream fis = new FileInputStream(excelPath);
+	Workbook wb = WorkbookFactory.create(fis);
+	Sheet sheet = wb.getSheet(sheetName);
+	int rc = sheet.getLastRowNum();
+	return rc;
+}
+
+
+public void writeExcelData(String excelPath,String sheetName,int rowCount,int cellCount,String data) throws EncryptedDocumentException, IOException
+{
+	FileInputStream fis = new FileInputStream(excelPath);
+	Workbook wb = WorkbookFactory.create(fis);
+	Sheet sheet = wb.getSheet(sheetName);
+	Row row = sheet.getRow(rowCount);
+
+	Cell cell = row.createCell(cellCount);
+	cell.setCellValue(data);
+
+	FileOutputStream fos = new FileOutputStream(excelPath);
+	wb.write(fos);
+}
+
+public String readPropertyData(String propPath,String key) throws IOException
+{
+	FileInputStream fis = new FileInputStream(propPath);
+
+	Properties prop = new Properties();
+	prop.load(fis);
+	String data = prop.getProperty(key);
+	return data;
 	
-	//RowCount
-	public int rowCount(String ExcelPath, String SheetName) throws EncryptedDocumentException, IOException
-	{
-		FileInputStream fis = new FileInputStream(ExcelPath);
-		Workbook wb = WorkbookFactory.create(fis);
-		Sheet sheet = wb.getSheet(SheetName);
-		int rc = sheet.getLastRowNum();
-		return rc;
-		
-		
-	}
-	
-	//Create Excel Data
-	
-	public void createExcelData(String ExcelPath, String SheetName, int rowCount, int CellCount, String data) throws EncryptedDocumentException, IOException
-	{
-		FileInputStream fis = new FileInputStream(ExcelPath);
-		Workbook wb = WorkbookFactory.create(fis);
-		Sheet sheet = wb.getSheet(SheetName);
-		Row row = sheet.getRow(rowCount);
-		Cell cell = row.createCell(CellCount);
-		cell.setCellValue(data);
-		
-		FileOutputStream fos = new FileOutputStream(ExcelPath);
-		wb.write(fos);
-		
-	}
-	
-	//Read The Property File
-	public String readPropertyData(String PropPath, String key) throws EncryptedDocumentException, IOException
-	{
-		FileInputStream fis = new FileInputStream(PropPath);
-		Properties prop = new Properties();
-		prop.load(fis);
-		String data = prop.getProperty(key);
-		return data;
-		
-	}
+}
 	
 
 }

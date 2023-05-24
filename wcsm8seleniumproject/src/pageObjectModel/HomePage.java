@@ -42,6 +42,19 @@ public class HomePage {
 	public WebElement getReportModule() {
 		return reportModule;
 	}
+	
+	 
+		// operational Methods
+		
+		public void logOutMethod()
+		{
+			logoutLink.click();
+		}
+		
+		public void usersModuleMethod()
+		{
+			usersModule.click();
+		}
 
 
 }
